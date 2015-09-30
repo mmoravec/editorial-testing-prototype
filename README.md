@@ -1,4 +1,4 @@
-# account-dashboard
+# Headline-Testing App
 MEAN web app that is used to generate account level reports
 
 ## Running Locally ##
@@ -12,7 +12,7 @@ NOTE: If you do not have xcode command tools installed please do so by running t
 6. Checkout the latest code from GitHub in the dashboard folder
 7. Start the mean shelll by typing use_meanstack
 8. Enter the mongo console by typing mongo admin --username root --pasword YOURPASSWORD
-9. Create a new database called dashboard by typing use dashboard
+9. Create a new database called headline by typing use headline
 10. Run the following code to create a user for the dashboard DB
 ```
 db.createUser({ user: "dashboardAdmin",
@@ -20,7 +20,7 @@ db.createUser({ user: "dashboardAdmin",
    "roles": [
      {
        "role": "readWrite",
-       "db": "dashboard" 
+       "db": "headline" 
     } 
   ]
 });

@@ -28,7 +28,7 @@ OptimizelyAPI = function(auth) {
 
 OptimizelyAPI.prototype.authorizeClient = function() {
 
-    var CLIENT_ID = this.client_id || 2845500185;
+    var CLIENT_ID = this.client_id || 3575080439;
     var AUTHORIZATION_ENDPOINT = "https://app.optimizely.com/oauth2/authorize";
 
     var authUrl = AUTHORIZATION_ENDPOINT +
@@ -36,7 +36,7 @@ OptimizelyAPI.prototype.authorizeClient = function() {
         "&scopes=all" +
         "&client_id=" + CLIENT_ID +
         "&state=12345" +
-        "&redirect_uri=" + "https:" + window.location.href.substring(window.location.protocol.length);
+        "&redirect_uri=" + "http:" + window.location.href.substring(window.location.protocol.length);
 
     window.location.href = authUrl;
 }

@@ -7,40 +7,33 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-var React = require('react');
 var bodyParser = require('body-parser');
-var swig = require('swig');
 var env = require('./config/' + process.env.NODE_ENV);
 
-var routes = require('./routes/index');
 var authRoutes = require('./routes/auth');
 var accountRoutes = require('./routes/account');
 var userRoutes = require('./routes/user');
-var goalsRoutes = require('./routes/goals');
-var experimentRoutes = require('./routes/experiment');
 
 var app = express();
 
-// view engine setup
-app.engine('swig', swig.renderFile);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'swig');
-app.set('view cache', false);
-swig.setDefaults({ cache: false });
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(cookieParser('123Siki34D'));
 app.use(session({secret: 'dRsdf#1!sw', saveUninitialized: true, resave: true}));
 app.use(passport.initialize());
 app.use(passport.session());
-if(process.env.NODE_ENV == 'local'){
+// if(process.env.NODE_ENV == 'local'){
     app.use(express.static(path.join(__dirname, 'assets')));
-}else{
-    app.use(express.static(path.join(__dirname, 'public')));
-}
-
+// }else{
+//     app.use(express.static(path.join(__dirname, 'public')));
+// }
+debugger;
 
 
 // mongoose
@@ -53,13 +46,12 @@ mongoose.connect('mongodb://'+
     mongoConfig.DB);
 
 
-
-app.use('/', routes);
 app.use('/', authRoutes);
 app.use('/', accountRoutes);
 app.use('/', userRoutes);
-app.use('/', goalsRoutes);
-app.use('/', experimentRoutes);
+app.use('/*', function(req, res){
+  res.sendfile(__dirname + '/assets/index.html');
+});
 
 
 // catch 404 and forward to error handler
@@ -73,24 +65,24 @@ app.use(function(req, res, next) {
 
 // development error handler
 // will print stacktrace
-if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
-    });
-}
+// if (app.get('env') === 'development') {
+//     app.use(function(err, req, res, next) {
+//         res.status(err.status || 500);
+//         res.render('error', {
+//             message: err.message,
+//             error: err
+//         });
+//     });
+// }
 
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
-});
+// // production error handler
+// // no stacktraces leaked to user
+// app.use(function(err, req, res, next) {
+//     res.status(err.status || 500);
+//     res.render('error', {
+//         message: err.message,
+//         error: {}
+//     });
+// });
 
 module.exports = app;
